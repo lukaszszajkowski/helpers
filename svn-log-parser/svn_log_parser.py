@@ -3,13 +3,13 @@
 Created on March 20, 2013
 
 @author: Lukasz Szajkowski
-@contact: Lukasc.Szajkowski@bbc.co.uk
+@contact: lukasz@logicallysoftware.co.uk
 @version: 1.0
 @summary: Parse svn log and provide statistics about authors 
       
 Examples:
     
-    export "SLP_CFGFILE=/usr/local/etc/aws-ec2-monitor.conf" - Set the path to configuration file
+    export "SLP_CFGFILE=./svn-log-parser.conf" - Set the path to configuration file
     ./%prog [options]    
     ./%prog -h - show this help message and exit 
 '''
@@ -26,7 +26,7 @@ syslog_handler = logging.handlers.SysLogHandler(address='/dev/log')
 def init_log(log):
     """ All Errors go to stderr and /var/log/messages"""
     
-    log = logging.getLogger('aws-ec2-manager')
+    log = logging.getLogger('parser')
     handler = logging.StreamHandler()
     handler.setLevel(logging.DEBUG)
     formatter = logging.Formatter("%(asctime)s " + "%(levelname)s\t%(message)s")
@@ -34,7 +34,7 @@ def init_log(log):
     log.addHandler(handler)
     
     syslog_handler.setLevel(logging.ERROR)
-    formatter = logging.Formatter("aws-ec2-manager %(levelname)s\t%(message)s")
+    formatter = logging.Formatter("svn-log-parser %(levelname)s\t%(message)s")
     syslog_handler.setFormatter(formatter)            
     log.addHandler(syslog_handler)
     
@@ -183,7 +183,7 @@ def configure_log_file(conf):
             formatter = logging.Formatter("%(asctime)s " + "%(levelname)s\t%(message)s")
             handler.setFormatter(formatter)        
             log.addHandler(handler)
-            log.info("Starting new aws-ec2-monitor with %s log file" % (conf.log_file_path))
+            log.info("Starting new svn-log-parser with %s log file" % (conf.log_file_path))
         except Exception, (errno):
             log.error("Could not open the log file %s - %s" % (conf.log_file_path, errno))
     
@@ -200,7 +200,7 @@ def parse_tags_list(tags_string):
     for item in list:
         t = item.split(":")
         if len(t) != 2:
-            raise OptionsError("parsing aws-metrics-tags parameter [%s]" % (tags_string))
+            raise OptionsError("parsing tags parameter [%s]" % (tags_string))
         tags[t[0]] = t[1]
     return tags
 
@@ -267,7 +267,7 @@ def runMain(arguments, output=sys.stdout):
       
 Examples:
     
-    export "SLP_CFGFILE=/usr/local/etc/aws-ec2-monitor.conf" - Set the path to configuration file
+    export "SLP_CFGFILE=./svn-log-parser.conf" - Set the path to configuration file
     ./%prog [options]    
     ./%prog -h - show this help message and exit """
        
