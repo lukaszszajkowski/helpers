@@ -5,6 +5,6 @@ Helpers scripts
 
 
 
-AWS CloudWatchm Mnitoring Script
+AWS CloudWatch Mnitoring Script
 =======
 Shell script how to to install AWS CloudWatch Monitoring Script on RHEL6
